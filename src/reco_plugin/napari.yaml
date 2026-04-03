@@ -1,46 +1,46 @@
-name: reco-plugin
+name: napari-reco-plugin
 display_name: Reconstruction Plugin
 schema_version: 0.2.0
 visibility: public
 contributions:
   commands:
-    - id: reco-plugin.reconstruction
+    - id: napari-reco-plugin.reconstruction
       python_name: reco_plugin._widget:ReconstructionWidget
       title: Reconstruction
 
-    - id: reco-plugin.multi_paganin
+    - id: napari-reco-plugin.multi_paganin
       python_name: reco_plugin._widget:MultiPaganinWidget
       title: Multi Paganin
 
-    - id: reco-plugin.get_reader
+    - id: napari-reco-plugin.get_reader
       python_name: reco_plugin._reader:napari_get_reader
       title: Read NXS Files
 
-    - id: reco-plugin.tif_writer
+    - id: napari-reco-plugin.tif_writer
       python_name: reco_plugin._writer:write_tiff
       title: Write TIF Files
 
-    - id: reco-plugin.raw_writer
+    - id: napari-reco-plugin.raw_writer
       python_name: reco_plugin._writer:write_raw
       title: Write Raw Files
 
   widgets:
-    - command: reco-plugin.reconstruction
+    - command: napari-reco-plugin.reconstruction
       display_name: Reconstruction
 
-    - command: reco-plugin.multi_paganin
+    - command: napari-reco-plugin.multi_paganin
       display_name: Multi Paganin
 
   readers:
-    - command: reco-plugin.get_reader
+    - command: napari-reco-plugin.get_reader
       filename_patterns: ["*.nxs", "*.tdf"]
       accepts_directories: false
 
   writers:
-    - command: reco-plugin.tif_writer
+    - command: napari-reco-plugin.tif_writer
       layer_types: ["image"]
       filename_extensions: [".tif"]
 
-    - command: reco-plugin.raw_writer
+    - command: napari-reco-plugin.raw_writer
       layer_types: ["image"]
       filename_extensions: [".raw"]

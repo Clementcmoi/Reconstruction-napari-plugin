@@ -1,54 +1,79 @@
 # Reconstruction Napari Plugin
 
-This project is a Napari plugin for data reconstruction.
-
-## Requirements
-
-- [Python 3.12](https://www.python.org/downloads/release/python-3129/)
-- [Anaconda](https://www.anaconda.com/)
-- [Napari](https://napari.org/)
-- [Cuda Toolkit](https://developer.nvidia.com/cuda-toolkit)
-- [Astra Toolbox](https://www.astra-toolbox.com/)
-- [Cupy](https://cupy.dev/)
-- Other dependencies listed in `requirements.txt` or `pyproject.toml`
+This project is a Napari plugin for GPU-accelerated tomographic reconstruction, including Paganin phase retrieval.
 
 ## Installation
 
-### 1. Create and activate a conda environment
+### Option 1 — Install from Napari Hub (recommended)
+
+Once published, the plugin can be installed directly from the Napari plugin manager:
+
+1. Open **Napari**
+2. Go to **Plugins > Install/Uninstall Plugins**
+3. Search for **"napari-reco-plugin"**
+4. Click **Install**
+
+Alternatively, install via pip:
+
+```bash
+pip install napari-reco-plugin
+```
+
+---
+
+### Option 2 — Manual installation (development)
+
+#### 1. Create and activate a conda environment
 
 ```bash
 conda create -n napari-env python=3.12
 conda activate napari-env
 ```
 
-### 2. Install main dependencies with conda/pip
+#### 2. Install main dependencies
 
 ```bash
 conda install -c conda-forge napari pyqt
 conda install -c astra-toolbox -c nvidia astra-toolbox
+
+# Ensure compatibility with ASTRA
 pip install numpy==1.26.4
-# Use cupy-cuda12x or cupy-cuda11x depending on your CUDA version
-pip install cupy-cuda12x 
+
+# Install CuPy depending on your CUDA version
+pip install cupy-cuda12x  # or cupy-cuda11x
 ```
 
-### 3. Clone the repository
+#### 3. Clone the repository
 
 ```bash
 git clone https://github.com/Clementcmoi/Reconstruction.git
 cd Reconstruction
 ```
 
-### 4. Install requirements
-
-```bash
-pip install -r requirements.txt
-```
-
-### 5. Install the plugin in editable/development mode
+#### 4. Install the plugin
 
 ```bash
 pip install -e .
 ```
+
+---
+
+## Requirements
+
+### Core
+
+* Python ≥ 3.9
+* Napari
+
+### Optional (for GPU acceleration)
+
+* CUDA Toolkit
+* CuPy
+* ASTRA Toolbox
+
+> ⚠️ GPU dependencies are not installed automatically. You must install them manually according to your system configuration.
+
+---
 
 ## Usage
 
@@ -58,46 +83,45 @@ Start Napari:
 napari
 ```
 
-Then, access the plugin via the Napari plugins menu (`Plugins > Reconstruction Plugin > Reconstruction` or `Multi Paganin`).
+Then open the plugin via:
+
+```
+Plugins > Reconstruction Plugin
+```
+
+Available tools:
+
+* **Reconstruction**
+* **Multi Paganin**
+
+---
 
 ## Launchers Templates
 
-Template scripts for launching Napari with the correct environment are available in the `launchers/` folder.  
-To use them:
+Template scripts for launching Napari with the correct environment are available in the `launchers/` folder.
 
-1. **Copy the desired `.bat` file from `launchers/` to your preferred location.**
-2. **Edit the file:**  
-   - Replace `<path_to_conda>` with the path to your Miniconda/Anaconda installation.
-   - Replace `<your_napari_env>` with the name of your conda environment (e.g., `napari-env`).
-   - Optionally, adjust the working directory or other paths as needed.
+### Usage
 
-3. **Double-click the `.bat` file to launch Napari with the appropriate environment.**
+1. Copy a `.bat` file from `launchers/`
+2. Edit:
 
-These templates are not updated automatically by Git and are intended for local customization.
+   * `<path_to_conda>` → your Anaconda/Miniconda path
+   * `<your_napari_env>` → your environment name
+3. Double-click to launch
 
-### Create a Desktop Shortcut for a Launcher
+### Desktop shortcut (optional)
 
-To create a desktop shortcut for a launcher:
+* Right-click `.bat` → **Send to Desktop**
+* (Optional) Change icon via shortcut properties
 
-1. **Right-click** the desired `.bat` file.
-2. Select **"Send to" > "Desktop (create shortcut)"**.
-3. On your desktop, you can **rename the shortcut** as you wish.
-
-#### Set a Custom Icon for the Shortcut
-
-1. **Right-click** the shortcut on your desktop and select **"Properties"**.
-2. Go to the **"Shortcut"** tab and click **"Change Icon..."**.
-3. Browse and select the `.ico` file available in the `launchers/` folder (e.g., `launchers/napari.ico`).
-   - You can use this Napari logo or any custom icon.
-   - If you have a `.png` or other image, convert it to `.ico` using an online converter.
-4. Click **OK** to apply the icon.
+---
 
 ## Project Structure
 
-- Plugin source code: `src/reco_plugin/`
-- Plugin manifest: `src/reco_plugin/napari.yaml`
-- Data files: `.npy`, `.tif` (ignored by Git)
-- Notebooks: `.ipynb` (ignored by Git)
+* Plugin source code: `src/reco_plugin/`
+* Plugin manifest: `src/reco_plugin/napari.yaml`
+
+---
 
 ## License
 
