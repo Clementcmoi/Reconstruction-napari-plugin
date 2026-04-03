@@ -1,0 +1,19 @@
+# ── Pip-installable dependencies (also declared in pyproject.toml) ────────────
+h5py
+numpy
+scipy
+tqdm
+scikit-image
+matplotlib>=3.5
+dask[array]
+qtpy
+napari>=0.4.18
+
+# ── Must be installed manually (CUDA version-dependent) ──────────────────────
+#
+# 1. ASTRA Toolbox  (requires conda):
+#    conda install -c astra-toolbox astra-toolbox
+#
+# 2. CuPy  (choose the line that matches your CUDA version):
+#    pip install cupy-cuda12x   # CUDA 12.x
+#    pip install cupy-cuda11x   # CUDA 11.x

@@ -1,0 +1,66 @@
+[project]
+name = "napari-reco-plugin"
+version = "0.1.0"
+description = "Napari plugin for GPU-accelerated tomographic reconstruction with Paganin phase retrieval"
+readme = "README.md"
+license = { file = "LICENSE" }
+
+authors = [
+    { name = "Clément Capdeville", email = "clement.capdeville@univ-lyon1.fr" },
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: napari",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+
+requires-python = ">=3.9"
+
+dependencies = [
+    "h5py",
+    "numpy",
+    "scipy",
+    "tqdm",
+    "scikit-image",
+    "matplotlib>=3.5",
+    "dask[array]",
+    "qtpy",
+    "napari>=0.4.18",
+    # astra-toolbox and cupy must be installed manually:
+    # conda install -c astra-toolbox astra-toolbox
+    # pip install cupy-cuda12x   (or cupy-cuda11x depending on your CUDA version)
+]
+
+[project.optional-dependencies]
+testing = [
+    "pytest",
+    "pytest-qt",
+    "napari[pyqt5]",
+]
+
+[project.entry-points."napari.manifest"]
+napari-reco-plugin = "reco_plugin:napari.yaml"
+
+[project.urls]
+"Bug Tracker" = "https://github.com/Clementcmoi/Reconstruction/issues"
+"Source Code" = "https://github.com/Clementcmoi/Reconstruction"
+
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"reco_plugin" = ["napari.yaml"]

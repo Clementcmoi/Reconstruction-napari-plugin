@@ -1,0 +1,23 @@
+# Données et fichiers volumineux
+*.npy
+*.npz
+*.tif
+
+# Figures générées
+*.png
+
+# Notebooks d'analyse
+*.ipynb
+
+# Cache Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Artefacts de build
+*.egg-info/
+dist/
+build/
+
+# Résultats
+nps_results/
