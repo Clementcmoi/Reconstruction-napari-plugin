@@ -128,4 +128,4 @@ Template scripts for launching Napari with the correct environment are available
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0), in compliance with the [ASTRA Toolbox license](https://www.astra-toolbox.com/).

@@ -1,6 +1,6 @@
 [project]
 name = "napari-reco-plugin"
-version = "0.1.0"
+version = "0.1.1"
 description = "Napari plugin for GPU-accelerated tomographic reconstruction with Paganin phase retrieval"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -13,7 +13,7 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "Framework :: napari",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
@@ -52,8 +52,8 @@ testing = [
 napari-reco-plugin = "reco_plugin:napari.yaml"
 
 [project.urls]
-"Bug Tracker" = "https://github.com/Clementcmoi/Reconstruction/issues"
-"Source Code" = "https://github.com/Clementcmoi/Reconstruction"
+"Bug Tracker" = "https://github.com/Clementcmoi/Reconstruction-napari-plugin/issues"
+"Source Code" = "https://github.com/Clementcmoi/Reconstruction-napari-plugin"
 
 [build-system]
 requires = ["setuptools>=64", "wheel"]
