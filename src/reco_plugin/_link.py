@@ -134,6 +134,14 @@ def _build_algo_params(experiment):
                 params['min_constraint'] = float(experiment.recon_min_constraint)
             if experiment.recon_max_constraint is not None:
                 params['max_constraint'] = float(experiment.recon_max_constraint)
+    # pixel_size in meters → convert to mm for ASTRA geometry scaling
+    # (ASTRA output will then be in mm⁻¹ instead of 1/pixel)
+    try:
+        pixel_m = float(experiment.pixel)
+        if pixel_m > 0:
+            params['pixel_size_mm'] = pixel_m * 1e3
+    except (TypeError, ValueError):
+        pass
     return params
 
 
@@ -558,6 +566,7 @@ def call_process_one_slice(experiment, viewer, widget):
         experiment.update_parameters(widget, parameters_to_update=[
             "sample_images", "slice_idx",
             "center_of_rotation", "acquisition_type", "double_flatfield",
+            "pixel",
             "recon_algo", "recon_gpu", "recon_filter_type", "recon_iterations",
             "recon_min_constraint", "recon_max_constraint"])
         slice_idx   = int(experiment.slice_idx)
@@ -634,7 +643,9 @@ def call_process_all_slices(experiment, viewer, widget):
     try:
         experiment.update_parameters(widget, parameters_to_update=[
             "sample_images", "center_of_rotation", "acquisition_type",
-            "double_flatfield", "batch_size",
+            "double_flatfield", "batch_size", "bigdata",
+            "energy", "pixel", "dist_object_detector", "db",
+            "sigma", "coeff",
             "recon_algo", "recon_gpu", "recon_filter_type", "recon_iterations",
             "recon_min_constraint", "recon_max_constraint"])
         cor         = float(experiment.center_of_rotation)
@@ -824,7 +835,13 @@ def call_process_all_slices(experiment, viewer, widget):
                 'acquisition': 'half' if acq_type else 'standard',
             },
         }
-        recon_name = f"Vol_cor{cor:.1f}_{algo}"
+        base_name = f"Vol_cor{cor:.1f}_{algo}"
+        existing = {l.name for l in viewer.layers}
+        recon_name = base_name
+        idx = 1
+        while recon_name in existing:
+            recon_name = f"{base_name}_{idx}"
+            idx += 1
 
         if kind == 'bigdata':
             e, px, d, db = paganin_params if paganin_params else (0, 0, 0, 0)
@@ -847,15 +864,21 @@ def call_process_all_slices(experiment, viewer, widget):
             widget._bigdata_h5_out = h5_out
             viewer.add_image(dask_arr, name=f"bigdata_{recon_name}", metadata=recon_meta)
         else:
-            if recon_name in [l.name for l in viewer.layers]:
-                viewer.layers.remove(recon_name)
             viewer.add_image(final_data, name=recon_name, metadata=recon_meta)
 
         dialog.close()
+
+    def on_result_safe(result):
+        try:
+            on_result(result)
+        except Exception:
+            import traceback
+            print(f"Process all slices on_result error:\n{traceback.format_exc()}")
+            dialog.close()
 
     def on_error(msg):
         print(f"Process all slices error: {msg}")
         dialog.close()
 
     widget._active_thread, widget._active_worker = run_in_thread(
-        compute, on_result, on_error)
+        compute, on_result_safe, on_error)

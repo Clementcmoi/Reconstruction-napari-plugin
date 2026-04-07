@@ -92,20 +92,23 @@ def create_sinogram_slice_from_pairs(proj: cp.ndarray, CoR, angle_pairs: list[tu
     CoR_int = int(round(CoR))
     frac = CoR - CoR_int
 
-    weights = apply_left_weighting(CoR_int)
     ny = proj.shape[1]
-    sino = cp.zeros((len(angle_pairs), 2 * ny - CoR_int))
+    effective_CoR = min(CoR_int, ny)
+    weights = apply_left_weighting(effective_CoR)
+    sino_width = max(1, 2 * ny - CoR_int)
+    sino = cp.zeros((len(angle_pairs), sino_width))
+    wl = min(ny, sino_width)
 
     for k, (i, j) in enumerate(angle_pairs):
         proj_i = cp.copy(proj[i])
-        proj_i[:CoR_int] *= weights[0]
+        proj_i[:effective_CoR] *= weights[0]
         flip_i = proj_i[::-1]
 
         proj_j = cp.copy(proj[j])
-        proj_j[:CoR_int] *= weights[0]
+        proj_j[:effective_CoR] *= weights[0]
 
-        sino[k, :ny] += flip_i
-        sino[k, -ny:] += proj_j
+        sino[k, :wl] += flip_i[:wl]
+        sino[k, sino_width - wl:] += proj_j[ny - wl:]
 
     if abs(frac) > 1e-6:
         sino = cp_shift(sino, (0, frac), order=1, mode='nearest')
@@ -120,21 +123,24 @@ def create_sinograms_from_pairs(projs: np.ndarray, CoR, angle_pairs: list[tuple[
     CoR_int = int(round(CoR))
     frac = CoR - CoR_int
 
-    weights = apply_left_weighting(CoR_int).get()
     n_angles, n_slices, n_pixels = projs.shape
-    sino = np.zeros((n_slices, len(angle_pairs), 2 * n_pixels - CoR_int))
+    effective_CoR = min(CoR_int, n_pixels)
+    weights = apply_left_weighting(effective_CoR).get()
+    sino_width = max(1, 2 * n_pixels - CoR_int)
+    sino = np.zeros((n_slices, len(angle_pairs), sino_width))
+    wl = min(n_pixels, sino_width)
 
     for slice_idx in tqdm(range(n_slices), desc="Creating sinograms"):
         for k, (i, j) in enumerate(angle_pairs):
             proj_i = np.copy(projs[i, slice_idx])
-            proj_i[:CoR_int] *= weights[0]
+            proj_i[:effective_CoR] *= weights[0]
             flip_i = proj_i[::-1]
 
             proj_j = np.copy(projs[j, slice_idx])
-            proj_j[:CoR_int] *= weights[0]
+            proj_j[:effective_CoR] *= weights[0]
 
-            sino[slice_idx, k, :n_pixels] += flip_i
-            sino[slice_idx, k, -n_pixels:] += proj_j
+            sino[slice_idx, k, :wl] += flip_i[:wl]
+            sino[slice_idx, k, sino_width - wl:] += proj_j[n_pixels - wl:]
 
     # Apply fractional sub-pixel shift along detector axis
     if abs(frac) > 1e-6:

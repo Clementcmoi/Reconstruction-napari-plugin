@@ -34,7 +34,7 @@ def phase_retrieval(I: cp.ndarray, delta_beta: float, distance: float, energy: f
     phi_fft = I_fft / denominator
     # img_real = cp.real(ifft2(ifftshift(phi_fft)))  # en m-1
     img_real = cp.real(ifft2(phi_fft))  # en m-1
-    return - cp.log(cp.maximum(img_real, cp.finfo(cp.float32).eps)) * delta_beta * 0.5
+    return - cp.log(cp.maximum(img_real, cp.finfo(cp.float32).eps))
 
 def get_padding_size(image: cp.ndarray, energy: float, pixel_size: float, distance: float) -> int:
     """

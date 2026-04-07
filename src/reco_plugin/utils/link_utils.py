@@ -221,7 +221,9 @@ def process_volume_bigdata(
         batch = _load_range(load_start, load_end)   # (n_angles, loaded, width)
 
         if not skip_preprocess:
-            batch = apply_flat_darkfield(batch, flat, dark)['preprocess']
+            dark_batch = dark[load_start:load_end, :] if dark is not None else None
+            flat_batch = flat[load_start:load_end, :] if flat is not None else None
+            batch = apply_flat_darkfield(batch, flat_batch, dark_batch)['preprocess']
 
             if paganin_on:
                 batch = paganin_filter(batch, energy, pixel, dist, db)['paganin']

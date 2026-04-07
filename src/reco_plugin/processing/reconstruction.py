@@ -87,8 +87,17 @@ def reconstruct_from_sinogram_slice(
     if algo_params is None:
         algo_params = {}
 
-    proj_geom = astra.create_proj_geom('parallel', 1, sinogram.shape[1], angles)
-    vol_geom  = astra.create_vol_geom(sinogram.shape[1], sinogram.shape[1])
+    # pixel_size_mm: physical size of one detector pixel in mm.
+    # ASTRA output is in 1/pixel by default (detector_spacing=1).
+    # Setting detector_spacing = pixel_size_mm makes the output directly in mm⁻¹.
+    pixel_size_mm = float(algo_params.get('pixel_size_mm', 1.0))
+
+    proj_geom = astra.create_proj_geom('parallel', pixel_size_mm, sinogram.shape[1], angles)
+    vol_geom  = astra.create_vol_geom(sinogram.shape[1], sinogram.shape[1],
+                                       -sinogram.shape[1] / 2 * pixel_size_mm,
+                                        sinogram.shape[1] / 2 * pixel_size_mm,
+                                       -sinogram.shape[1] / 2 * pixel_size_mm,
+                                        sinogram.shape[1] / 2 * pixel_size_mm)
 
     sinogram_id = astra.data2d.create('-sino', proj_geom, sinogram)
     rec_id      = astra.data2d.create('-vol',  vol_geom)
