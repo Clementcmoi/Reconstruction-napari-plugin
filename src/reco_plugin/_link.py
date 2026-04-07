@@ -568,10 +568,11 @@ def call_process_one_slice(experiment, viewer, widget):
         cor         = float(experiment.center_of_rotation)
         acq_type    = widget.acquisition_type_selection.currentIndex()
         use_angles  = widget.angles_checkbox.isChecked()
-        hdf5_path   = _get_hdf5_path(viewer, experiment)
-        algo        = _resolve_algo(experiment)
-        algo_params = _build_algo_params(experiment)
-        source_name = widget.sample_selection.currentText()
+        hdf5_path     = _get_hdf5_path(viewer, experiment)
+        algo          = _resolve_algo(experiment)
+        algo_params   = _build_algo_params(experiment)
+        source_name   = widget.sample_selection.currentText()
+        hdf5_src_path = _get_source_hdf5_path(viewer, source_name)
 
         # Slice-only pipeline — no full-volume paganin
         projs_2d, apply_unsharp = _get_slice_projs(
@@ -608,6 +609,7 @@ def call_process_one_slice(experiment, viewer, widget):
                 f'recon({algo},cor={cor:.2f},slice={slice_idx})'
             ],
             'source': source_name,
+            'hdf5_source_path': hdf5_src_path,
             'reconstruction': {
                 'algo': algo, 'algo_params': algo_params,
                 'cor': cor, 'slice': slice_idx,
@@ -815,6 +817,7 @@ def call_process_all_slices(experiment, viewer, widget):
         recon_meta = {
             'processing_history': recon_history,
             'source': source_name,
+            'hdf5_source_path': hdf5_src_path,
             'reconstruction': {
                 'algo': algo, 'algo_params': algo_params,
                 'cor': cor, 'sigma': sigma, 'coeff': coeff,

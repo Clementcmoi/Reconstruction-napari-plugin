@@ -1,6 +1,8 @@
 # Reconstruction Napari Plugin
 
-This project is a Napari plugin for GPU-accelerated tomographic reconstruction, including Paganin phase retrieval.
+A Napari plugin for tomographic reconstruction using the [ASTRA Toolbox](https://www.astra-toolbox.com/), with optional Paganin phase retrieval filter for phase-contrast data.
+
+Supported reconstruction algorithms: **FBP**, **BP**, **SIRT**, **SART**, **CGLS** — all available in CPU or GPU (CUDA) mode.
 
 ## Installation
 
@@ -46,8 +48,8 @@ pip install cupy-cuda12x  # or cupy-cuda11x
 #### 3. Clone the repository
 
 ```bash
-git clone https://github.com/Clementcmoi/Reconstruction.git
-cd Reconstruction
+git clone https://github.com/Clementcmoi/Reconstruction-napari-plugin.git
+cd Reconstruction-napari-plugin
 ```
 
 #### 4. Install the plugin
@@ -64,12 +66,13 @@ pip install -e .
 
 * Python ≥ 3.9
 * Napari
+* ASTRA Toolbox
 
 ### Optional (for GPU acceleration)
 
 * CUDA Toolkit
 * CuPy
-* ASTRA Toolbox
+
 
 > ⚠️ GPU dependencies are not installed automatically. You must install them manually according to your system configuration.
 
