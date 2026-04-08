@@ -1,4 +1,12 @@
 {
-    "python-envs.defaultEnvManager": "ms-python.python:conda",
-    "python-envs.defaultPackageManager": "ms-python.python:conda"
+    "python.defaultInterpreterPath": "C:\\Users\\clement.capdeville\\.conda\\envs\\napari-env\\python.exe",
+    "jupyter.interactiveWindow.textEditor.executeSelection": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.extraPaths": [
+        "C:\\Users\\clement.capdeville\\.conda\\envs\\napari-env\\Lib\\site-packages"
+    ],
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportOperatorIssue": "none",
+        "reportGeneralTypeIssues": "none"
+    }
 }

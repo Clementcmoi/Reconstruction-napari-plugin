@@ -564,9 +564,10 @@ def call_process_one_slice(experiment, viewer, widget):
     dialog = create_processing_dialog(viewer.window._qt_window)
     try:
         experiment.update_parameters(widget, parameters_to_update=[
-            "sample_images", "slice_idx",
-            "center_of_rotation", "acquisition_type", "double_flatfield",
-            "pixel",
+            "sample_images", "center_of_rotation", "acquisition_type",
+            "double_flatfield", "batch_size", "bigdata",
+            "energy", "pixel", "dist_object_detector", "db",
+            "sigma", "coeff",
             "recon_algo", "recon_gpu", "recon_filter_type", "recon_iterations",
             "recon_min_constraint", "recon_max_constraint"])
         slice_idx   = int(experiment.slice_idx)
